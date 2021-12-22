@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TicTacToe</string>
+    <string name="heading">Tic-Tac-Toe</string>
+    <string name="grid">This is our main Grid</string>
+    <string name="status1">Xs turn - Tap to play</string>
+    <string name="developer">By Zohaib Sathio</string>
+</resources>

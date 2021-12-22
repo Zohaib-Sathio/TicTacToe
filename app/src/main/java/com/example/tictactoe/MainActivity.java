@@ -1,0 +1,123 @@
+package com.example.tictactoe;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    boolean winState = true;
+    boolean checkWin = false;
+    int activePlayer = 0;
+    int times = 0;
+    int reset = 0;
+    // 0 - X
+    // 1 - O
+    int gameState[] = {2, 2, 2, 2, 2, 2, 2, 2, 2};
+    int[][] winPositions = { {0,1,2}, {3,4,5}, {6,7,8},
+                            {0,3,6}, {1,4,7}, {2,5,8},
+                                {0,4,8}, {2,4,6} };
+
+
+    public void playerTap(View view){
+
+        ImageView img = (ImageView) view;
+
+        int tappedImage = Integer.parseInt(img.getTag().toString());
+        if(!winState){
+            gameReset(view);
+            reset++;
+        }
+    if(reset==0){
+        if(gameState[tappedImage] == 2){
+            if(times==10){
+                gameReset(view);
+                times=0;
+            }
+            if(times==9){
+                TextView status = findViewById(R.id.status);
+                status.setText("Draw!");
+                status.setTextSize(35f);
+            }
+
+            times++;
+            gameState[tappedImage] = activePlayer;
+            img.setTranslationY(-1000f);
+            if(activePlayer == 0){
+                img.setImageResource(R.drawable.x);
+                activePlayer = 1;
+                TextView status = findViewById(R.id.status);
+                status.setText("O's Turn - Tap to play.");
+            }
+            else {
+                img.setImageResource(R.drawable.o);
+                activePlayer = 0;
+                TextView status = findViewById(R.id.status);
+                status.setText("X's Turn - Tap to play.");
+            }
+            img.animate().translationYBy(1000f).setDuration(200);
+        }
+    }
+        for(int[] winPosition: winPositions){
+            if(gameState[winPosition[0]]== gameState[winPosition[1]] && gameState[winPosition[1]]== gameState[winPosition[2]]
+                    && gameState[winPosition[0]]!=2){
+
+                String winnerStr;
+
+                winState = false;
+
+                if(gameState[winPosition[0]]==0){
+                    winnerStr = "X has won.";
+                    times=0;
+                }
+                else{
+                    winnerStr = "O has won.";
+                    times=0;
+                }
+                TextView status = findViewById(R.id.status);
+                status.setText(winnerStr);
+                status.setTextSize(50f);
+
+            }
+        }
+
+        if(reset == 1){
+            --reset;
+        }
+
+
+
+
+    }
+
+    public void gameReset(View view){
+        activePlayer = 0;
+        for(int i=0; i < gameState.length ; i++){
+            gameState[i]=2;
+        }
+        TextView status = findViewById(R.id.status);
+        status.setText("X's Turn - Tap to play.");
+        ((ImageView)findViewById(R.id.imageView0)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView1)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView2)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView3)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView4)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView5)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView6)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView7)).setImageResource(0);
+        ((ImageView)findViewById(R.id.imageView8)).setImageResource(0);
+        winState = true;
+        status.setTextSize(20f);
+        times = 0;
+
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
